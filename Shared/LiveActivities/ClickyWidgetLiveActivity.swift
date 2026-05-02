@@ -14,41 +14,20 @@ import WidgetKit
 struct ClickyWidgetLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: ClickyWidgetAttributes.self) { context in
-            ClickyLiveActivityLockScreenContent(context: context, contentState: context.state)
+            ClickyLiveActivityLockScreenContent(title: context.attributes.title, contentState: context.state)
         } dynamicIsland: { context in
-            DynamicIsland {
-                // Expanded UI goes here.  Compose the expanded UI through
-                // various regions, like leading/trailing/center/bottom
-                DynamicIslandExpandedRegion(.leading) {
-                    Text("Leading")
-                }
-                DynamicIslandExpandedRegion(.trailing) {
-                    Text("Trailing")
-                }
-                DynamicIslandExpandedRegion(.bottom) {
-                    Text("Bottom \(context.state.count)")
-                    // more content
-                }
-            } compactLeading: {
-                Text("L")
-            } compactTrailing: {
-                Text("T \(context.state.count)")
-            } minimal: {
-                Text("\(context.state.count)")
-            }
-            .widgetURL(URL(string: "http://www.apple.com"))
-            .keylineTint(Color.red)
+            ClickyLiveActivityDynamicIslandContent(context: context).island
         }
     }
 }
 
 private struct ClickyLiveActivityLockScreenContent: View {
-    let context: ActivityViewContext<ClickyWidgetAttributes>
+    let title: LocalizedStringResource
     let contentState: ClickyWidgetAttributes.ContentState
 
     var body: some View {
         VStack {
-            Text("\(context.attributes.title):")
+            Text(title)
             Text("\(contentState.count)")
             HStack(spacing: 24) {
                 Button(intent: DecrementCounterIntent()) {
@@ -63,6 +42,35 @@ private struct ClickyLiveActivityLockScreenContent: View {
         }
         .activityBackgroundTint(Color.cyan)
         .activitySystemActionForegroundColor(Color.black)
+    }
+}
+
+private struct ClickyLiveActivityDynamicIslandContent {
+    let context: ActivityViewContext<ClickyWidgetAttributes>
+
+    var island: DynamicIsland {
+        DynamicIsland {
+            // Expanded UI goes here.  Compose the expanded UI through
+            // various regions, like leading/trailing/center/bottom
+            DynamicIslandExpandedRegion(.leading) {
+                Text("Leading")
+            }
+            DynamicIslandExpandedRegion(.trailing) {
+                Text("Trailing")
+            }
+            DynamicIslandExpandedRegion(.bottom) {
+                Text("Bottom \(context.state.count)")
+                // more content
+            }
+        } compactLeading: {
+            Text("L")
+        } compactTrailing: {
+            Text("T \(context.state.count)")
+        } minimal: {
+            Text("\(context.state.count)")
+        }
+        .widgetURL(URL(string: "http://www.apple.com"))
+        .keylineTint(Color.red)
     }
 }
 

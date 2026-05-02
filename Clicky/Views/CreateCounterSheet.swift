@@ -57,7 +57,7 @@ struct CreateCounterSheet: View {
                     Logger.liveActivity.info(
                         "Starting live activity for counter '\(counter.name)' with id \(counter.id.uuidString)"
                     )
-                    let attributes = ClickyWidgetAttributes(title: counter.name, id: counter.id)
+                    let attributes = ClickyWidgetAttributes(title: counter.localizedName, id: counter.id)
                     let content = ActivityContent(
                         state: ClickyWidgetAttributes.ContentState(count: counter.count),
                         staleDate: nil

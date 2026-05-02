@@ -12,7 +12,7 @@ struct ClickyWidgetAttributes: ActivityAttributes {
         var count: Int
     }
 
-    var title: String
+    var title: LocalizedStringResource
     var id: UUID
 }
 #endif
