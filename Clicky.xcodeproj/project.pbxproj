@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		29AB129A2F648F6000432592 /* ClickyWidgetAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AB12992F648F6000432592 /* ClickyWidgetAttributes.swift */; };
-		29AB129B2F648F6500432592 /* ClickyWidgetAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AB12992F648F6000432592 /* ClickyWidgetAttributes.swift */; };
 		29AB12FA2F649B0700432592 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AB12E62F649B0700432592 /* Enums.swift */; };
 		29AB13192F65A19300432592 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AB12E62F649B0700432592 /* Enums.swift */; };
 		29AB131C2F685CF100432592 /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = 29AB131A2F685CF100432592 /* .swiftformat */; };
@@ -61,7 +59,6 @@
 		2974E35A2F58EA5500A468C0 /* Clicky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clicky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2974E3692F58EA5600A468C0 /* ClickyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClickyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2974E3732F58EA5600A468C0 /* ClickyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClickyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		29AB12992F648F6000432592 /* ClickyWidgetAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClickyWidgetAttributes.swift; sourceTree = "<group>"; };
 		29AB12E62F649B0700432592 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		29AB131A2F685CF100432592 /* .swiftformat */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftformat; sourceTree = "<group>"; };
 		29AB131B2F685CF100432592 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -71,6 +68,23 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		29433BAD2FA6AFC500C6BADA /* Exceptions for "LiveActivities" folder in "Clicky" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ClickyWidgetLiveActivity.swift,
+				CounterIntents.swift,
+			);
+			target = 2974E3592F58EA5500A468C0 /* Clicky */;
+		};
+		29433BAE2FA6AFFC00C6BADA /* Exceptions for "Clicky" folder in "Clicky" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Config/Base.xcconfig,
+				Config/Debug.xcconfig,
+				Config/Release.xcconfig,
+			);
+			target = 2974E3592F58EA5500A468C0 /* Clicky */;
+		};
 		29E2644D2F5DDA1A0049F201 /* Exceptions for "ClickyWidget" folder in "ClickyWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -81,8 +95,19 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		29433BAC2FA6AFB800C6BADA /* LiveActivities */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				29433BAD2FA6AFC500C6BADA /* Exceptions for "LiveActivities" folder in "Clicky" target */,
+			);
+			path = LiveActivities;
+			sourceTree = "<group>";
+		};
 		2974E35C2F58EA5500A468C0 /* Clicky */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				29433BAE2FA6AFFC00C6BADA /* Exceptions for "Clicky" folder in "Clicky" target */,
+			);
 			path = Clicky;
 			sourceTree = "<group>";
 		};
@@ -180,9 +205,9 @@
 		29AB12552F648A3E00432592 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				29433BAC2FA6AFB800C6BADA /* LiveActivities */,
 				29AB143F2F688D2300432592 /* Extensions */,
 				29AB12E62F649B0700432592 /* Enums.swift */,
-				29AB12992F648F6000432592 /* ClickyWidgetAttributes.swift */,
 				29AB12562F648A7D00432592 /* Models */,
 			);
 			path = Shared;
@@ -215,6 +240,7 @@
 				29E2644B2F5DDA1A0049F201 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				29433BAC2FA6AFB800C6BADA /* LiveActivities */,
 				2974E35C2F58EA5500A468C0 /* Clicky */,
 				29AB12562F648A7D00432592 /* Models */,
 				29AB143F2F688D2300432592 /* Extensions */,
@@ -285,6 +311,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				29433BAC2FA6AFB800C6BADA /* LiveActivities */,
 				29AB12562F648A7D00432592 /* Models */,
 				29AB143F2F688D2300432592 /* Extensions */,
 				29E2643C2F5DDA190049F201 /* ClickyWidget */,
@@ -304,7 +331,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2630;
-				LastUpgradeCheck = 2630;
+				LastUpgradeCheck = 2640;
 				TargetAttributes = {
 					2974E3592F58EA5500A468C0 = {
 						CreatedOnToolsVersion = 26.3;
@@ -387,7 +414,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				29AB12FA2F649B0700432592 /* Enums.swift in Sources */,
-				29AB129A2F648F6000432592 /* ClickyWidgetAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,7 +436,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				29AB13192F65A19300432592 /* Enums.swift in Sources */,
-				29AB129B2F648F6500432592 /* ClickyWidgetAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -470,6 +495,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 4HM8AA4867;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -493,6 +519,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -532,6 +559,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 4HM8AA4867;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -548,6 +576,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};
 			name = Release;
@@ -562,6 +591,7 @@
 				CODE_SIGN_ENTITLEMENTS = Clicky/Clicky.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 4HM8AA4867;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -610,6 +640,7 @@
 				CODE_SIGN_ENTITLEMENTS = Clicky/Clicky.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 4HM8AA4867;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -654,6 +685,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 4HM8AA4867;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
@@ -680,6 +712,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 4HM8AA4867;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
@@ -705,6 +738,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 4HM8AA4867;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
@@ -730,6 +764,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 4HM8AA4867;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;

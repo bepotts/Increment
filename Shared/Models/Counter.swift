@@ -10,23 +10,25 @@ import SwiftData
 
 @Model
 final class Counter {
-    @Attribute(.unique) var id: UUID
-    var count: Int
-    var name: String
-    var incrementBy: Int
+	@Attribute(.unique) var id: UUID
+	var count: Int
+	var name: String
+	var incrementBy: Int
 
-    init(id: UUID = UUID(), count: Int = 0, name: String = "", incrementBy: Int = 1) {
-        self.id = id
-        self.count = count
-        self.name = name
-        self.incrementBy = incrementBy
-    }
+	var localizedName: LocalizedStringResource { LocalizedStringResource(stringLiteral: name) }
 
-    func increment() {
-        count += incrementBy
-    }
+	init(id: UUID = UUID(), count: Int = 0, name: String = "", incrementBy: Int = 1) {
+		self.id = id
+		self.count = count
+		self.name = name
+		self.incrementBy = incrementBy
+	}
 
-    func decrement() {
-        count = max(0, count - incrementBy)
-    }
+	func increment() {
+		count += incrementBy
+	}
+
+	func decrement() {
+		count = max(0, count - incrementBy)
+	}
 }

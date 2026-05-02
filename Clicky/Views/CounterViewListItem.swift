@@ -20,7 +20,7 @@ struct CounterViewListItem: View {
             .accessibilityLabel("Decrement")
             Spacer()
             VStack(alignment: .leading, spacing: 40) {
-                Text(counter.name)
+                Text(counter.localizedName)
                 Text("\(counter.count)")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)

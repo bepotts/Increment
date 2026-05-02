@@ -14,24 +14,7 @@ import WidgetKit
 struct ClickyWidgetLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: ClickyWidgetAttributes.self) { context in
-            // Lock screen/banner UI goes here
-            VStack {
-                Text("\(context.attributes.title):")
-                Text("\(context.state.count)")
-                HStack(spacing: 24) {
-                    Button(intent: DecrementCounterIntent()) {
-                        Image(systemName: "minus.circle.fill")
-                            .font(.title2)
-                    }
-                    Button(intent: IncrementCounterIntent()) {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.title2)
-                    }
-                }
-            }
-            .activityBackgroundTint(Color.cyan)
-            .activitySystemActionForegroundColor(Color.black)
-
+            ClickyLiveActivityLockScreenContent(context: context, contentState: context.state)
         } dynamicIsland: { context in
             DynamicIsland {
                 // Expanded UI goes here.  Compose the expanded UI through
@@ -56,6 +39,30 @@ struct ClickyWidgetLiveActivity: Widget {
             .widgetURL(URL(string: "http://www.apple.com"))
             .keylineTint(Color.red)
         }
+    }
+}
+
+private struct ClickyLiveActivityLockScreenContent: View {
+    let context: ActivityViewContext<ClickyWidgetAttributes>
+    let contentState: ClickyWidgetAttributes.ContentState
+
+    var body: some View {
+        VStack {
+            Text("\(context.attributes.title):")
+            Text("\(contentState.count)")
+            HStack(spacing: 24) {
+                Button(intent: DecrementCounterIntent()) {
+                    Image(systemName: "minus.circle.fill")
+                        .font(.title2)
+                }
+                Button(intent: IncrementCounterIntent()) {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.title2)
+                }
+            }
+        }
+        .activityBackgroundTint(Color.cyan)
+        .activitySystemActionForegroundColor(Color.black)
     }
 }
 
