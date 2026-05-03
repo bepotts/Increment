@@ -22,12 +22,12 @@ struct ClickyWidgetLiveActivity: Widget {
 }
 
 private struct ClickyLiveActivityLockScreenContent: View {
-    let title: LocalizedStringResource
+    let title: String
     let contentState: ClickyWidgetAttributes.ContentState
 
     var body: some View {
         VStack {
-            Text(title)
+            Text(LocalizedStringResource(stringLiteral: title))
             Text("\(contentState.count)")
             HStack(spacing: 24) {
                 Button(intent: DecrementCounterIntent()) {

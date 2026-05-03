@@ -10,13 +10,13 @@ import ActivityKit
 import AppIntents
 import OSLog
 
-struct ClickyWidgetAttributes: ActivityAttributes {
-    struct ContentState: Codable, Hashable {
+nonisolated struct ClickyWidgetAttributes: ActivityAttributes, Sendable {
+    nonisolated struct ContentState: Codable, Hashable, Sendable {
         var count: Int
     }
 
-    var title: LocalizedStringResource
-    var id: UUID
+    let title: String
+    let id: UUID
 }
 
 

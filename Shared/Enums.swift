@@ -8,5 +8,5 @@
 import Foundation
 
 enum AppStrings {
-    static let bundle = Bundle.main.bundleIdentifier ?? "No bundle identifier found"
+    nonisolated static let bundle = Bundle.main.bundleIdentifier ?? "No bundle identifier found"
 }
