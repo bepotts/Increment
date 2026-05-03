@@ -5,6 +5,7 @@
 //  Created by Brandon Potts on 3/4/26.
 //
 
+import OSLog
 import SwiftData
 import SwiftUI
 
@@ -33,7 +34,11 @@ struct CounterListView: View {
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             Button(role: .destructive) {
                                 modelContext.delete(counter)
-                                try? modelContext.save()
+                                do {
+                                    try modelContext.save()
+                                } catch {
+                                    Logger.storage.error("Failed to delete counter: \(error)")
+                                }
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }

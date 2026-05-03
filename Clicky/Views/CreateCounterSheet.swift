@@ -51,7 +51,11 @@ struct CreateCounterSheet: View {
             #endif
             Button("Done") {
                 modelContext.insert(counter)
-                try? modelContext.save()
+                do {
+                    try modelContext.save()
+                } catch {
+                    Logger.storage.error("Failed to save counter: \(error)")
+                }
                 #if os(iOS)
                 if liveView && areActivitiesEnabled {
                     Logger.liveActivity.info(
