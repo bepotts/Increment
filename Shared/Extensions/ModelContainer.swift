@@ -1,5 +1,5 @@
 //
-//  Extensions.swift
+//  ModelContainer.swift
 //  Clicky
 //
 //  Created by Brandon Potts on 3/11/26.
@@ -14,13 +14,13 @@ extension ModelContainer {
         guard
             let url = FileManager.default
                 .containerURL(forSecurityApplicationGroupIdentifier: groupID)?
-                .appending(path: "Clicky.sqlite")
+                .appending(path: "Clicky.store")
         else {
             fatalError("Could not resolve App Group container URL")
         }
 
         let schema = Schema([Counter.self], version: CounterSchemaV1.versionIdentifier)
-        let config = ModelConfiguration(schema: schema, url: url)
+        let config = ModelConfiguration(schema: schema, url: url, cloudKitDatabase: .automatic)
 
         do {
             return try ModelContainer(for: schema, migrationPlan: CounterMigrationPlan.self, configurations: config)

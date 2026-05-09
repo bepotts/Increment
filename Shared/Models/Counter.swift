@@ -10,10 +10,10 @@ import SwiftData
 
 @Model
 final class Counter {
-	@Attribute(.unique) var id: UUID
-	var count: Int
-	var name: String
-	var incrementBy: Int
+	var id: UUID = UUID()
+	var count: Int = 0
+	var name: String = ""
+	var incrementBy: Int = 1
 
 	@Transient var localizedName: LocalizedStringResource { LocalizedStringResource(stringLiteral: name) }
 
