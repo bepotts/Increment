@@ -15,7 +15,7 @@ final class Counter {
 	var name: String = ""
 	var incrementBy: Int = 1
 
-	@Transient var localizedName: LocalizedStringResource { LocalizedStringResource(stringLiteral: name) }
+	var localizedName: LocalizedStringResource { LocalizedStringResource(stringLiteral: name) }
 
 	init(id: UUID = UUID(), count: Int = 0, name: String = "", incrementBy: Int = 1) {
 		self.id = id

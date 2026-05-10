@@ -12,17 +12,17 @@ import SwiftUI
 struct CounterListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var counters: [Counter]
-    @State private var navigateToCounterView = false
     @State private var selectedCounter: Counter?
 
     var body: some View {
         NavigationStack {
             Group {
                 if counters.isEmpty {
-                    Button("create new counter") {
-                        selectedCounter = Counter()
+                    ContentUnavailableView {
+                        Label("No Counters", systemImage: "number.square")
+                    } description: {
+                        Text("Tap the + button to create your first counter.")
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
                     List(counters) { counter in
                         Button {
@@ -56,11 +56,6 @@ struct CounterListView: View {
             .sheet(item: $selectedCounter) { counter in
                 CreateCounterSheet(counter: counter, onCreated: handleCounterCreated)
                     .presentationDetents([.medium])
-            }
-            .navigationDestination(isPresented: $navigateToCounterView) {
-                if let selectedCounter {
-                    CounterView(counter: selectedCounter)
-                }
             }
         }
     }

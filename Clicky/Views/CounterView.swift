@@ -12,15 +12,12 @@ struct CounterView: View {
     @Bindable var counter: Counter
 
     var body: some View {
-        ZStack {
-            Color.clear
-            VStack(spacing: 24) {
-                CounterNameField(counter: counter)
-                CounterCountText(count: counter.count)
-                HStack(spacing: 24) {
-                    DecrementButton(counter: counter)
-                    IncrementButton(counter: counter)
-                }
+        VStack(spacing: 24) {
+            CounterNameField(counter: counter)
+            CounterCountText(count: counter.count)
+            HStack(spacing: 24) {
+                DecrementButton(counter: counter)
+                IncrementButton(counter: counter)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

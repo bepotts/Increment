@@ -13,6 +13,5 @@ struct CounterNameField: View {
     var body: some View {
         TextField("Enter name of count", text: $counter.name)
             .textFieldStyle(.plain)
-            .frame(maxWidth: 280)
     }
 }

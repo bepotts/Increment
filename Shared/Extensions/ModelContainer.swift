@@ -19,7 +19,7 @@ extension ModelContainer {
             fatalError("Could not resolve App Group container URL")
         }
 
-        let schema = Schema([Counter.self], version: CounterSchemaV1.versionIdentifier)
+        let schema = Schema([Counter.self], version: CounterSchemaV2.versionIdentifier)
         let config = ModelConfiguration(schema: schema, url: url, cloudKitDatabase: .automatic)
 
         do {

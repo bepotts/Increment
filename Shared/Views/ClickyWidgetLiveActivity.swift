@@ -14,7 +14,11 @@ import WidgetKit
 struct ClickyWidgetLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: ClickyWidgetAttributes.self) { context in
-            ClickyLiveActivityLockScreenContent(title: context.attributes.title, contentState: context.state)
+            ClickyLiveActivityLockScreenContent(
+                title: context.attributes.title,
+                counterId: context.attributes.id.uuidString,
+                contentState: context.state
+            )
         } dynamicIsland: { context in
             ClickyLiveActivityDynamicIslandContent(context: context).island
         }
@@ -23,18 +27,31 @@ struct ClickyWidgetLiveActivity: Widget {
 
 private struct ClickyLiveActivityLockScreenContent: View {
     let title: String
+    let counterId: String
     let contentState: ClickyWidgetAttributes.ContentState
+
+    private var decrementIntent: DecrementCounterIntent {
+        let intent = DecrementCounterIntent()
+        intent.counterId = counterId
+        return intent
+    }
+
+    private var incrementIntent: IncrementCounterIntent {
+        let intent = IncrementCounterIntent()
+        intent.counterId = counterId
+        return intent
+    }
 
     var body: some View {
         VStack {
             Text(LocalizedStringResource(stringLiteral: title))
             Text("\(contentState.count)")
             HStack(spacing: 24) {
-                Button(intent: DecrementCounterIntent()) {
+                Button(intent: decrementIntent) {
                     Image(systemName: "minus.circle.fill")
                         .font(.title2)
                 }
-                Button(intent: IncrementCounterIntent()) {
+                Button(intent: incrementIntent) {
                     Image(systemName: "plus.circle.fill")
                         .font(.title2)
                 }

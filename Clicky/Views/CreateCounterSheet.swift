@@ -23,6 +23,7 @@ struct CreateCounterSheet: View {
     @State private var liveView = false
     @State private var areActivitiesEnabled = ActivityAuthorizationInfo().areActivitiesEnabled
     #endif
+    @State private var errorMessage: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -49,43 +50,52 @@ struct CreateCounterSheet: View {
                 Toggle("Live View", isOn: $liveView)
             }
             #endif
-            Button("Done") {
-                modelContext.insert(counter)
-                do {
-                    try modelContext.save()
-                } catch {
-                    Logger.storage.error("Failed to save counter: \(error)")
-                }
-                #if os(iOS)
-                if liveView && areActivitiesEnabled {
-                    Logger.liveActivity.info(
-                        "Starting live activity for counter '\(counter.name)' with id \(counter.id.uuidString)"
-                    )
-                    let attributes = ClickyWidgetAttributes(title: counter.name, id: counter.id)
-                    let content = ActivityContent(
-                        state: ClickyWidgetAttributes.ContentState(count: counter.count),
-                        staleDate: nil
-                    )
-                    do {
-                        let info = ActivityAuthorizationInfo()
-                        Logger.liveActivity.info("areActivitiesEnabled = \(info.areActivitiesEnabled)")
-
-                        let activity = try Activity<ClickyWidgetAttributes>.request(
-                            attributes: attributes,
-                            content: content
-                        )
-
-                        Logger.liveActivity.info("Started live activity: \(activity.id)")
-                    } catch {
-                        Logger.liveActivity.error("Failed to start live activity: \(error.localizedDescription)")
-                    }
-                }
-                #endif
-                onCreated()
-                dismiss()
-            }
-            .frame(maxWidth: .infinity)
+            Button("Done", action: handleDone)
+                .frame(maxWidth: .infinity)
         }
         .padding()
+        .alert("Something went wrong", isPresented: .constant(errorMessage != nil)) {
+            Button("OK") { errorMessage = nil }
+        } message: {
+            if let errorMessage {
+                Text(errorMessage)
+            }
+        }
+    }
+
+    private func handleDone() {
+        modelContext.insert(counter)
+        do {
+            try modelContext.save()
+        } catch {
+            Logger.storage.error("Failed to save counter: \(error)")
+            errorMessage = error.localizedDescription
+            return
+        }
+        #if os(iOS)
+        if liveView && areActivitiesEnabled {
+            Logger.liveActivity.info(
+                "Starting live activity for counter '\(counter.name)' with id \(counter.id.uuidString)"
+            )
+            let attributes = ClickyWidgetAttributes(title: counter.name, id: counter.id)
+            let content = ActivityContent(
+                state: ClickyWidgetAttributes.ContentState(count: counter.count),
+                staleDate: nil
+            )
+            do {
+                let activity = try Activity<ClickyWidgetAttributes>.request(
+                    attributes: attributes,
+                    content: content
+                )
+                Logger.liveActivity.info("Started live activity: \(activity.id)")
+            } catch {
+                Logger.liveActivity.error("Failed to start live activity: \(error.localizedDescription)")
+                errorMessage = error.localizedDescription
+                return
+            }
+        }
+        #endif
+        onCreated()
+        dismiss()
     }
 }

@@ -10,3 +10,8 @@ import Foundation
 enum AppStrings {
     nonisolated static let bundle = Bundle.main.bundleIdentifier ?? "No bundle identifier found"
 }
+
+enum CountOperation {
+    case increment
+    case decrement
+}
