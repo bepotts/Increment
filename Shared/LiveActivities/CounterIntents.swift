@@ -51,19 +51,12 @@ nonisolated struct ClickyWidgetAttributes: ActivityAttributes, Sendable {
 ///   - counterId: The id of the `Counter` to mutate.
 func performCountOperation(_ operation: CountOperation, for counterId: UUID) async throws {
     let context = ModelContext(ModelContainer.shared)
+    let store = CounterStore(context: context)
 
-    let descriptor = FetchDescriptor<Counter>(predicate: #Predicate { $0.id == counterId })
-    guard let counter = try context.fetch(descriptor).first else {
+    guard let counter = try store.apply(operation, to: counterId) else {
         Logger.liveActivity.error("Counter not found for id: \(counterId)")
         return
     }
-
-    switch operation {
-    case .increment: counter.increment()
-    case .decrement: counter.decrement()
-    }
-
-    try context.save()
 
     for activity in Activity<ClickyWidgetAttributes>.activities where activity.attributes.id == counterId {
         let newState = ClickyWidgetAttributes.ContentState(count: counter.count)

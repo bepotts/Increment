@@ -64,9 +64,8 @@ struct CreateCounterSheet: View {
     }
 
     private func handleDone() {
-        modelContext.insert(counter)
         do {
-            try modelContext.save()
+            try CounterStore(context: modelContext).insert(counter)
         } catch {
             Logger.storage.error("Failed to save counter: \(error)")
             errorMessage = error.localizedDescription

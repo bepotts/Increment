@@ -33,12 +33,7 @@ struct CounterListView: View {
                         .buttonStyle(.plain)
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             Button(role: .destructive) {
-                                modelContext.delete(counter)
-                                do {
-                                    try modelContext.save()
-                                } catch {
-                                    Logger.storage.error("Failed to delete counter: \(error)")
-                                }
+                                deleteCounter(counter)
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }
@@ -62,6 +57,14 @@ struct CounterListView: View {
 
     private func handleCounterCreated() {
         // navigateToCounterView = true TODO: Change this once I decide how to handle the navigation
+    }
+
+    private func deleteCounter(_ counter: Counter) {
+        do {
+            try CounterStore(context: modelContext).delete(counter)
+        } catch {
+            Logger.storage.error("Failed to delete counter: \(error)")
+        }
     }
 }
 
