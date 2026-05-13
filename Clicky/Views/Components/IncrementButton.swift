@@ -5,15 +5,16 @@
 //  Created by Brandon Potts on 3/4/26.
 //
 
+import OSLog
+import SwiftData
 import SwiftUI
 
 struct IncrementButton: View {
     let counter: Counter
+    @Environment(\.modelContext) private var modelContext
 
     var body: some View {
-        Button {
-            counter.increment()
-        } label: {
+        Button(action: handleIncrement) {
             Text("+")
                 .font(.largeTitle)
                 .bold()
@@ -23,5 +24,15 @@ struct IncrementButton: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Increment")
+    }
+
+    private func handleIncrement() {
+        Task {
+            do {
+                try await CounterStore(context: modelContext).updateLiveActivity(for: counter.id, operation: .increment)
+            } catch {
+                Logger.storage.error("Failed to increment counter: \(error)")
+            }
+        }
     }
 }

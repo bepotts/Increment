@@ -5,18 +5,18 @@
 //  Created by Brandon Potts on 3/7/26.
 //
 
+import OSLog
 import SwiftData
 import SwiftUI
 
 struct CounterViewListItem: View {
+    @Environment(\.modelContext) private var modelContext
     @Bindable var counter: Counter
     var onLongPress: () -> Void
 
     var body: some View {
         HStack {
-            Button("-") {
-                counter.decrement()
-            }
+            Button("-") { Task { await decrement() } }
             .buttonStyle(.borderless)
             .accessibilityLabel("Decrement")
             Spacer()
@@ -27,13 +27,27 @@ struct CounterViewListItem: View {
                     .foregroundStyle(.secondary)
             }
             Spacer()
-            Button("+") {
-                counter.increment()
-            }
+            Button("+") { Task { await increment() } }
             .buttonStyle(.borderless)
             .accessibilityLabel("Increment")
         }
         .onLongPressGesture(perform: onLongPress)
+    }
+
+    private func increment() async {
+        do {
+            try await CounterStore(context: modelContext).updateLiveActivity(for: counter.id, operation: .increment)
+        } catch {
+            Logger.storage.error("Failed to increment counter: \(error)")
+        }
+    }
+
+    private func decrement() async {
+        do {
+            try await CounterStore(context: modelContext).updateLiveActivity(for: counter.id, operation: .decrement)
+        } catch {
+            Logger.storage.error("Failed to decrement counter: \(error)")
+        }
     }
 }
 
