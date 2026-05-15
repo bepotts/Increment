@@ -1,6 +1,6 @@
 //
 //  CounterIntents.swift
-//  Clicky
+//  Increment
 //
 //  Created by Brandon Potts on 5/2/26.
 //
@@ -11,8 +11,8 @@ import AppIntents
 import OSLog
 import SwiftData
 
-/// Attributes describing a Clicky Live Activity for a single `Counter`.
-nonisolated struct ClickyWidgetAttributes: ActivityAttributes, Sendable {
+/// Attributes describing an Increment Live Activity for a single `Counter`.
+nonisolated struct IncrementWidgetAttributes: ActivityAttributes, Sendable {
     nonisolated struct ContentState: Codable, Hashable, Sendable {
         /// The current count to display in the Live Activity UI.
         var count: Int
@@ -41,7 +41,7 @@ nonisolated struct ClickyWidgetAttributes: ActivityAttributes, Sendable {
 ///    `decrement()` clamps at zero, so calling this with `.decrement`
 ///    on a counter at `0` is a no-op.
 /// 3. Saves the context and pushes a new `ContentState` to every
-///    active `ClickyWidgetAttributes` activity whose `id` matches.
+///    active `IncrementWidgetAttributes` activity whose `id` matches.
 ///
 /// If no matching counter is found, the function logs and returns
 /// without throwing so that stale intents don't crash the widget.
@@ -68,8 +68,8 @@ func performCountOperation(_ operation: CountOperation, for counterId: UUID) asy
         Logger.liveActivity.error("Failed to save context: \(error)")
     }
 
-    for activity in Activity<ClickyWidgetAttributes>.activities where activity.attributes.id == counterId {
-        let newState = ClickyWidgetAttributes.ContentState(count: counter.count)
+    for activity in Activity<IncrementWidgetAttributes>.activities where activity.attributes.id == counterId {
+        let newState = IncrementWidgetAttributes.ContentState(count: counter.count)
         await activity.update(ActivityContent(state: newState, staleDate: nil))
     }
 }

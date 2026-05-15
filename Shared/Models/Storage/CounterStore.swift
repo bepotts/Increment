@@ -1,6 +1,6 @@
 //
 //  CounterStore.swift
-//  Clicky
+//  Increment
 //
 //  Created by Brandon Potts on 5/12/26.
 //
@@ -70,10 +70,10 @@ struct CounterStore {
     func updateLiveActivity(for counterId: UUID, operation: CountOperation) async throws {
         Logger.liveActivity.info("Updating Live Activity for counterId: \(counterId)")
         let counter = try apply(operation, to: counterId)
-        for activity in Activity<ClickyWidgetAttributes>.activities where activity.attributes.id == counterId {
+        for activity in Activity<IncrementWidgetAttributes>.activities where activity.attributes.id == counterId {
             Logger.liveActivity.info("Updating Live Activity for counter: \(counter.id) inside the real function")
             await activity.update(ActivityContent(
-                state: ClickyWidgetAttributes.ContentState(count: counter.count),
+                state: IncrementWidgetAttributes.ContentState(count: counter.count),
                 staleDate: nil
             ))
         }

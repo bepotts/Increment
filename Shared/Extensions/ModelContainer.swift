@@ -1,6 +1,6 @@
 //
 //  ModelContainer.swift
-//  Clicky
+//  Increment
 //
 //  Created by Brandon Potts on 3/11/26.
 //
@@ -10,11 +10,11 @@ import SwiftData
 
 extension ModelContainer {
     static var shared: ModelContainer = {
-        let groupID = "group.com.pottsProjects.Clicky"
+        let groupID = "group.com.pottsProjects.Increment"
         guard
             let url = FileManager.default
                 .containerURL(forSecurityApplicationGroupIdentifier: groupID)?
-                .appending(path: "Clicky.store")
+                .appending(path: "Increment.store")
         else {
             fatalError("Could not resolve App Group container URL")
         }

@@ -1,6 +1,6 @@
 //
 //  Counter.swift
-//  Clicky
+//  Increment
 //
 //  Created by Brandon Potts on 3/4/26.
 //

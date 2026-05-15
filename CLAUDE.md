@@ -4,12 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Clicky is a SwiftUI-based iOS counter application that uses SwiftData for persistence. The app allows users to create multiple named counters with customizable increment values.
+Increment is a SwiftUI-based iOS counter application that uses SwiftData for persistence. The app allows users to create multiple named counters with customizable increment values.
 
 ## Architecture
 
 ### Data Layer
-- **SwiftData**: The app uses SwiftData for model persistence with a `ModelContainer` configured in `ClickyApp.swift:13-24`
+- **SwiftData**: The app uses SwiftData for model persistence with a `ModelContainer` configured in `IncrementApp.swift:13-24`
 - **Counter Model** (`Models/Counter.swift`): SwiftData `@Model` class with properties: `count`, `name`, and `incrementBy`. Contains `increment()` and `decrement()` methods (decrement prevents negative values)
 
 ### View Layer
@@ -18,7 +18,7 @@ Clicky is a SwiftUI-based iOS counter application that uses SwiftData for persis
 - **CounterView** (`Views/CounterView.swift`): Currently appears to be a standalone counter view (navigation integration pending - see TODO at line 53 in CounterListView.swift)
 
 ### Key Patterns
-- The app entry point (`ClickyApp.swift`) sets up a shared `ModelContainer` and presents `CounterListView` as the root
+- The app entry point (`IncrementApp.swift`) sets up a shared `ModelContainer` and presents `CounterListView` as the root
 - Views use `@Environment(\.modelContext)` to access the SwiftData context for CRUD operations
 - `@Bindable` is used with Counter objects to enable two-way binding in views
 
@@ -26,19 +26,19 @@ Clicky is a SwiftUI-based iOS counter application that uses SwiftData for persis
 
 ### Building
 ```bash
-xcodebuild -scheme Clicky -configuration Debug build
+xcodebuild -scheme Increment -configuration Debug build
 ```
 
 ### Testing
 ```bash
 # Run all tests
-xcodebuild test -scheme Clicky -destination 'platform=iOS Simulator,name=iPhone 16'
+xcodebuild test -scheme Increment -destination 'platform=iOS Simulator,name=iPhone 16'
 
 # Run unit tests only
-xcodebuild test -scheme Clicky -only-testing:ClickyTests -destination 'platform=iOS Simulator,name=iPhone 16'
+xcodebuild test -scheme Increment -only-testing:IncrementTests -destination 'platform=iOS Simulator,name=iPhone 16'
 
 # Run UI tests only
-xcodebuild test -scheme Clicky -only-testing:ClickyUITests -destination 'platform=iOS Simulator,name=iPhone 16'
+xcodebuild test -scheme Increment -only-testing:IncrementUITests -destination 'platform=iOS Simulator,name=iPhone 16'
 ```
 
 ### Linting and Formatting
