@@ -17,6 +17,7 @@ struct IncrementApp: App {
     @AppStorage("lastSeenLanding") private var lastSeenLanding: Double = 0
     // Time interval to show the landing page
     private let landingInterval: TimeInterval = 24 * 60 * 60 // 24 hours in seconds
+    private let analyticsClient: any AnalyticsClient = FirebaseAnalyticsClient()
 
     private var shouldShowLanding: Bool {
         let elapsed = Date().timeIntervalSince1970 - lastSeenLanding
@@ -37,6 +38,7 @@ struct IncrementApp: App {
                 CounterListView()
             }
         }
+        .environment(\.analyticsClient, analyticsClient)
         .modelContainer(ModelContainer.shared)
     }
 

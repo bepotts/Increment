@@ -5,7 +5,6 @@
 //  Created by Brandon Potts on 3/4/26.
 //
 
-import FirebaseAnalytics
 import OSLog
 import SwiftData
 import SwiftUI
@@ -17,6 +16,7 @@ import ActivityKit
 struct CreateCounterSheet: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.analyticsClient) private var analyticsClient
     @Bindable var counter: Counter
 
     #if os(iOS)
@@ -66,7 +66,7 @@ struct CreateCounterSheet: View {
     private func handleDone() {
         do {
             try CounterStore(context: modelContext).insert(counter)
-            Analytics.logEvent(AppAnalyticsEvent.counterCreated.rawValue, parameters: [
+            analyticsClient.logEvent(.counterCreated, parameters: [
                 "count": counter.count,
                 "name": counter.name,
                 "incrementBy": counter.incrementBy
@@ -92,7 +92,7 @@ struct CreateCounterSheet: View {
                     content: content
                 )
                 Logger.liveActivity.info("Started live activity: \(activity.id)")
-                Analytics.logEvent(AppAnalyticsEvent.liveActivityStarted.rawValue, parameters: nil)
+                analyticsClient.logEvent(.liveActivityStarted, parameters: nil)
             } catch {
                 Logger.liveActivity.error("Failed to start live activity: \(error.localizedDescription)")
                 errorMessage = error.localizedDescription

@@ -85,14 +85,16 @@
 		29741F1A2FB8B44F0055CE2A /* Exceptions for "Shared" folder in "IncrementTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Protocols/AnalyticsClient.swift,
+				Analytics/AnalyticsClient.swift,
+				Analytics/FirebaseAnalyticsClient.swift,
 			);
 			target = 2974E3682F58EA5600A468C0 /* IncrementTests */;
 		};
 		29741F1B2FB8B44F0055CE2A /* Exceptions for "Shared" folder in "IncrementUITests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Protocols/AnalyticsClient.swift,
+				Analytics/AnalyticsClient.swift,
+				Analytics/FirebaseAnalyticsClient.swift,
 			);
 			target = 2974E3722F58EA5600A468C0 /* IncrementUITests */;
 		};

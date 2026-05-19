@@ -8,7 +8,6 @@
 #if os(iOS)
 import ActivityKit
 import AppIntents
-import FirebaseAnalytics
 import OSLog
 import SwiftData
 
@@ -86,6 +85,8 @@ func performCountOperation(_ operation: CountOperation, for counterId: UUID) asy
 struct IncrementCounterIntent: LiveActivityIntent {
     static var title: LocalizedStringResource = "Increment counter"
 
+    private let analyticsClient: any AnalyticsClient = FirebaseAnalyticsClient()
+
     /// Stringified UUID of the counter to increment. Stored as `String`
     /// because `AppIntents` parameters don't natively support `UUID`.
     @Parameter(title: "Counter ID")
@@ -98,7 +99,7 @@ struct IncrementCounterIntent: LiveActivityIntent {
         }
         Logger.liveActivity.info("Performing increment counter for id: \(counterId)")
         try await performCountOperation(.increment, for: uuid)
-        Analytics.logEvent(AppAnalyticsEvent.incrementFromLiveActivity.rawValue, parameters: nil)
+        analyticsClient.logEvent(.incrementFromLiveActivity, parameters: nil)
         return .result()
     }
 }
@@ -110,6 +111,8 @@ struct IncrementCounterIntent: LiveActivityIntent {
 /// which clamps the value at zero so the counter cannot go negative.
 struct DecrementCounterIntent: LiveActivityIntent {
     static var title: LocalizedStringResource = "Decrement counter"
+
+    private let analyticsClient: any AnalyticsClient = FirebaseAnalyticsClient()
 
     /// Stringified UUID of the counter to decrement. Stored as `String`
     /// because `AppIntents` parameters don't natively support `UUID`.
@@ -123,7 +126,7 @@ struct DecrementCounterIntent: LiveActivityIntent {
         }
         Logger.liveActivity.info("Performing decrement counter for id: \(counterId)")
         try await performCountOperation(.decrement, for: uuid)
-        Analytics.logEvent(AppAnalyticsEvent.decrementFromLiveActivity.rawValue, parameters: nil)
+        analyticsClient.logEvent(.decrementFromLiveActivity, parameters: nil)
         return .result()
     }
 }
