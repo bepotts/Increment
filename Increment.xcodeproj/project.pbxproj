@@ -7,8 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29741E682FB7DE400055CE2A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29741E672FB7DE400055CE2A /* GoogleService-Info.plist */; };
+		29741E692FB7DE400055CE2A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29741E672FB7DE400055CE2A /* GoogleService-Info.plist */; };
+		29741E6A2FB7DE400055CE2A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29741E672FB7DE400055CE2A /* GoogleService-Info.plist */; };
+		29741E6B2FB7DE400055CE2A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29741E672FB7DE400055CE2A /* GoogleService-Info.plist */; };
+		29741E6D2FB7DF230055CE2A /* GoogleService-Info.template.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29741E6C2FB7DF230055CE2A /* GoogleService-Info.template.plist */; };
 		2993319A2FB7CF2200A00859 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 299331992FB7CF2200A00859 /* FirebaseAnalytics */; };
 		2993319C2FB7CF2200A00859 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2993319B2FB7CF2200A00859 /* FirebaseCrashlytics */; };
+		2993319F2FB8C6F400A00859 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2993319E2FB8C6F400A00859 /* FirebaseAnalytics */; };
 		29AB131C2F685CF100432592 /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = 29AB131A2F685CF100432592 /* .swiftformat */; };
 		29AB131D2F685CF100432592 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 29AB131B2F685CF100432592 /* .swiftlint.yml */; };
 		29E264392F5DDA190049F201 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29E264382F5DDA190049F201 /* WidgetKit.framework */; };
@@ -56,6 +62,8 @@
 
 /* Begin PBXFileReference section */
 		29712F972F62044C0056704D /* IncrementWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IncrementWidgetExtension.entitlements; sourceTree = "<group>"; };
+		29741E672FB7DE400055CE2A /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		29741E6C2FB7DF230055CE2A /* GoogleService-Info.template.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.template.plist"; sourceTree = "<group>"; };
 		2974E35A2F58EA5500A468C0 /* Increment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Increment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2974E3692F58EA5600A468C0 /* IncrementTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IncrementTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2974E3732F58EA5600A468C0 /* IncrementUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IncrementUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,6 +82,22 @@
 			);
 			target = 2974E3592F58EA5500A468C0 /* Increment */;
 		};
+		29741F1A2FB8B44F0055CE2A /* Exceptions for "Shared" folder in "IncrementTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Analytics/AnalyticsClient.swift,
+				Analytics/FirebaseAnalyticsClient.swift,
+			);
+			target = 2974E3682F58EA5600A468C0 /* IncrementTests */;
+		};
+		29741F1B2FB8B44F0055CE2A /* Exceptions for "Shared" folder in "IncrementUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Analytics/AnalyticsClient.swift,
+				Analytics/FirebaseAnalyticsClient.swift,
+			);
+			target = 2974E3722F58EA5600A468C0 /* IncrementUITests */;
+		};
 		29E2644D2F5DDA1A0049F201 /* Exceptions for "IncrementWidget" folder in "IncrementWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -86,6 +110,10 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		29433BB92FA6BCA900C6BADA /* Shared */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				29741F1A2FB8B44F0055CE2A /* Exceptions for "Shared" folder in "IncrementTests" target */,
+				29741F1B2FB8B44F0055CE2A /* Exceptions for "Shared" folder in "IncrementUITests" target */,
+			);
 			path = Shared;
 			sourceTree = "<group>";
 		};
@@ -145,6 +173,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2993319F2FB8C6F400A00859 /* FirebaseAnalytics in Frameworks */,
 				29E2643B2F5DDA190049F201 /* SwiftUI.framework in Frameworks */,
 				29E264392F5DDA190049F201 /* WidgetKit.framework in Frameworks */,
 			);
@@ -156,6 +185,8 @@
 		2974E3512F58EA5500A468C0 = {
 			isa = PBXGroup;
 			children = (
+				29741E672FB7DE400055CE2A /* GoogleService-Info.plist */,
+				29741E6C2FB7DF230055CE2A /* GoogleService-Info.template.plist */,
 				29AB131A2F685CF100432592 /* .swiftformat */,
 				29AB131B2F685CF100432592 /* .swiftlint.yml */,
 				29433BB92FA6BCA900C6BADA /* Shared */,
@@ -199,8 +230,8 @@
 				2974E3562F58EA5500A468C0 /* Sources */,
 				2974E3572F58EA5500A468C0 /* Frameworks */,
 				2974E3582F58EA5500A468C0 /* Resources */,
-				2993319D2FB7D6AD00A00859 /* Upload Crashlytics dSYM */,
 				29E264512F5DDA1A0049F201 /* Embed Foundation Extensions */,
+				2993319D2FB7D6AD00A00859 /* Upload Crashlytics dSYM */,
 			);
 			buildRules = (
 			);
@@ -284,6 +315,7 @@
 			);
 			name = IncrementWidgetExtension;
 			packageProductDependencies = (
+				2993319E2FB8C6F400A00859 /* FirebaseAnalytics */,
 			);
 			productName = IncrementWidgetExtension;
 			productReference = 29E264362F5DDA190049F201 /* IncrementWidgetExtension.appex */;
@@ -347,8 +379,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29741E6D2FB7DF230055CE2A /* GoogleService-Info.template.plist in Resources */,
 				29AB131C2F685CF100432592 /* .swiftformat in Resources */,
 				29AB131D2F685CF100432592 /* .swiftlint.yml in Resources */,
+				29741E682FB7DE400055CE2A /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,6 +390,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29741E6B2FB7DE400055CE2A /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,6 +398,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29741E692FB7DE400055CE2A /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,6 +406,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29741E6A2FB7DE400055CE2A /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,7 +525,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 4HM8AA4867;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -591,6 +628,7 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Increment/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -641,6 +679,7 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Increment/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -935,6 +974,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 299331982FB7CF2200A00859 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
+		};
+		2993319E2FB8C6F400A00859 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 299331982FB7CF2200A00859 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

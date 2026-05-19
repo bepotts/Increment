@@ -11,6 +11,7 @@ import SwiftUI
 
 struct CounterListView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.analyticsClient) private var analyticsClient
     @Query private var counters: [Counter]
     @State private var selectedCounter: Counter?
     @State private var isShowingDeleteAllConfirmation = false
@@ -78,6 +79,7 @@ struct CounterListView: View {
     private func deleteCounter(_ counter: Counter) {
         do {
             try CounterStore(context: modelContext).delete(counter)
+            analyticsClient.logEvent(.deleteCounter, parameters: nil)
         } catch {
             Logger.storage.error("Failed to delete counter: \(error)")
         }
@@ -86,6 +88,7 @@ struct CounterListView: View {
     private func deleteAllCounters() {
         do {
             try CounterStore(context: modelContext).deleteAll(counters)
+            analyticsClient.logEvent(.deleteAllCounters, parameters: nil)
         } catch {
             Logger.storage.error("Failed to delete all counters: \(error)")
         }

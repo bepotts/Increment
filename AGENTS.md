@@ -9,16 +9,22 @@ Increment is a SwiftUI-based iOS counter application that uses SwiftData for per
 ## Architecture
 
 ### Data Layer
-- **SwiftData**: The app uses SwiftData for model persistence with a `ModelContainer` configured in `IncrementApp.swift:13-24`
-- **Counter Model** (`Models/Counter.swift`): SwiftData `@Model` class with properties: `count`, `name`, and `incrementBy`. Contains `increment()` and `decrement()` methods (decrement prevents negative values)
+- **SwiftData**: The app uses SwiftData for model persistence with a shared `ModelContainer` extension in `Shared/Extensions/ModelContainer.swift`
+- **Counter Model** (`Shared/Models/Counter.swift`): SwiftData `@Model` class with properties including `count`, `name`, and `incrementBy`. Contains increment/decrement behavior through `CounterStore`
+- **Counter Store** (`Shared/Models/Storage/CounterStore.swift`): Encapsulates counter persistence and live activity updates
 
 ### View Layer
-- **CounterListView** (`Views/CounterListView.swift`): Root view showing list of all counters. Uses `@Query` to fetch counters from SwiftData. Includes sheet-based counter creation and swipe-to-delete functionality
-- **CounterViewListItem** (`Views/CounterViewListItem.swift`): List row component with inline increment/decrement buttons using `.buttonStyle(.borderless)` to allow interaction within the list
-- **CounterView** (`Views/CounterView.swift`): Currently appears to be a standalone counter view (navigation integration pending - see TODO at line 53 in CounterListView.swift)
+- **App Entry** (`Increment/App/IncrementApp.swift`): Configures Firebase, attaches the shared SwiftData container, and routes between onboarding and the counter list
+- **Counter List** (`Increment/Features/Counters/List/CounterListView.swift`): Root counter list. Uses `@Query` to fetch counters from SwiftData. Includes sheet-based counter creation and swipe-to-delete functionality
+- **Counter List Item** (`Increment/Features/Counters/List/CounterViewListItem.swift`): List row component with inline increment/decrement buttons using `.buttonStyle(.borderless)` to allow interaction within the list
+- **Counter Detail** (`Increment/Features/Counters/Detail/CounterView.swift`): Standalone counter detail view
+- **Counter Creation** (`Increment/Features/Counters/Create/CreateCounterSheet.swift`): Sheet for creating and editing counters
+- **Counter Components** (`Increment/Features/Counters/Components/`): Reusable counter controls and display components
+- **Onboarding** (`Increment/Features/Onboarding/LandingPage.swift`): Time-gated landing page shown before the counter list
 
 ### Key Patterns
-- The app entry point (`IncrementApp.swift`) sets up a shared `ModelContainer` and presents `CounterListView` as the root
+- The app target is organized by feature under `Increment/Features`, while reusable app setup lives under `Increment/App`
+- Shared models, storage, extensions, live activity views, and protocols live under `Shared`
 - Views use `@Environment(\.modelContext)` to access the SwiftData context for CRUD operations
 - `@Bindable` is used with Counter objects to enable two-way binding in views
 

@@ -11,6 +11,7 @@ import SwiftUI
 
 struct CounterViewListItem: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.analyticsClient) private var analyticsClient
     @Bindable var counter: Counter
     var onLongPress: () -> Void
 
@@ -37,6 +38,7 @@ struct CounterViewListItem: View {
     private func increment() async {
         do {
             try await CounterStore(context: modelContext).updateLiveActivity(for: counter.id, operation: .increment)
+            analyticsClient.logEvent(.incrementFromApp, parameters: nil)
         } catch {
             Logger.storage.error("Failed to increment counter: \(error)")
         }
@@ -45,6 +47,7 @@ struct CounterViewListItem: View {
     private func decrement() async {
         do {
             try await CounterStore(context: modelContext).updateLiveActivity(for: counter.id, operation: .decrement)
+            analyticsClient.logEvent(.decrementFromApp, parameters: nil)
         } catch {
             Logger.storage.error("Failed to decrement counter: \(error)")
         }

@@ -9,12 +9,15 @@ import FirebaseCore
 import SwiftData
 import SwiftUI
 
+/// App entry point that configures Firebase, attaches the shared SwiftData
+/// container, and routes between the landing page and the counter list.
 @main
 struct IncrementApp: App {
 
     @AppStorage("lastSeenLanding") private var lastSeenLanding: Double = 0
     // Time interval to show the landing page
     private let landingInterval: TimeInterval = 24 * 60 * 60 // 24 hours in seconds
+    private let analyticsClient: any AnalyticsClient = FirebaseAnalyticsClient()
 
     private var shouldShowLanding: Bool {
         let elapsed = Date().timeIntervalSince1970 - lastSeenLanding
@@ -35,6 +38,7 @@ struct IncrementApp: App {
                 CounterListView()
             }
         }
+        .environment(\.analyticsClient, analyticsClient)
         .modelContainer(ModelContainer.shared)
     }
 
