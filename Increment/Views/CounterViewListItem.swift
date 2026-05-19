@@ -38,7 +38,7 @@ struct CounterViewListItem: View {
     private func increment() async {
         do {
             try await CounterStore(context: modelContext).updateLiveActivity(for: counter.id, operation: .increment)
-            Analytics.logEvent("increment_from_app", parameters: nil)
+            Analytics.logEvent(AppAnalyticsEvent.incrementFromApp.rawValue, parameters: nil)
         } catch {
             Logger.storage.error("Failed to increment counter: \(error)")
         }
@@ -47,7 +47,7 @@ struct CounterViewListItem: View {
     private func decrement() async {
         do {
             try await CounterStore(context: modelContext).updateLiveActivity(for: counter.id, operation: .decrement)
-            Analytics.logEvent("decrement_from_app", parameters: nil)
+            Analytics.logEvent(AppAnalyticsEvent.decrementFromApp.rawValue, parameters: nil)
         } catch {
             Logger.storage.error("Failed to decrement counter: \(error)")
         }

@@ -13,6 +13,18 @@ enum AppStrings {
     nonisolated static let bundle = Bundle.main.bundleIdentifier ?? "No bundle identifier found"
 }
 
+/// Analytics event names emitted by the app and shared extension code.
+enum AppAnalyticsEvent: String {
+    case counterCreated = "counter_created"
+    case liveActivityStarted = "live_activity_started"
+    case incrementFromLiveActivity = "increment_from_live_activity"
+    case decrementFromLiveActivity = "decrement_from_live_activity"
+    case deleteCounter = "delete_counter"
+    case deleteAllCounters = "delete_all_counters"
+    case incrementFromApp = "increment_from_app"
+    case decrementFromApp = "decrement_from_app"
+}
+
 /// Represents a mutation to apply to a `Counter`'s value.
 ///
 /// Used by intents and views to describe whether a button or action should

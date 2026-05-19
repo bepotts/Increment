@@ -66,7 +66,7 @@ struct CreateCounterSheet: View {
     private func handleDone() {
         do {
             try CounterStore(context: modelContext).insert(counter)
-            Analytics.logEvent("counter_created", parameters: [
+            Analytics.logEvent(AppAnalyticsEvent.counterCreated.rawValue, parameters: [
                 "count": counter.count,
                 "name": counter.name,
                 "incrementBy": counter.incrementBy
@@ -92,7 +92,7 @@ struct CreateCounterSheet: View {
                     content: content
                 )
                 Logger.liveActivity.info("Started live activity: \(activity.id)")
-                Analytics.logEvent("live_activity_started", parameters: nil)
+                Analytics.logEvent(AppAnalyticsEvent.liveActivityStarted.rawValue, parameters: nil)
             } catch {
                 Logger.liveActivity.error("Failed to start live activity: \(error.localizedDescription)")
                 errorMessage = error.localizedDescription
