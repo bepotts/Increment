@@ -6,17 +6,16 @@
 //
 
 import Foundation
-import Testing
 @testable import Increment
-
+import Testing
 
 // Tests for the Counter model
 struct CounterTests {
     @Test func initializesWithDefaultValues() {
         let counter = Counter()
 
-        #expect(counter.count == 0)
-        #expect(counter.name == "")
+        #expect(counter.count == .zero)
+        #expect(counter.name.isEmpty)
         #expect(counter.incrementBy == 1)
     }
 
@@ -51,7 +50,7 @@ struct CounterTests {
 
         counter.decrement()
 
-        #expect(counter.count == 0)
+        #expect(counter.count == .zero)
     }
 
     @Test func decrementKeepsZeroAtZero() {
@@ -59,6 +58,6 @@ struct CounterTests {
 
         counter.decrement()
 
-        #expect(counter.count == 0)
+        #expect(counter.count == .zero)
     }
 }

@@ -6,9 +6,9 @@
 //
 
 import Foundation
+@testable import Increment
 import SwiftData
 import Testing
-@testable import Increment
 
 /// Tests for the shared SwiftData container configuration.
 @MainActor

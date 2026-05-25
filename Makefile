@@ -7,6 +7,8 @@ REPORT_DIR ?= TestReports
 TEST_RUN_ID ?= $(shell date +%Y%m%d-%H%M%S)
 RESULT_BUNDLE_PATH ?= $(REPORT_DIR)/$(SCHEME)-$(TEST_RUN_ID).xcresult
 TEST_REPORT_PATH ?= $(REPORT_DIR)/$(SCHEME)-$(TEST_RUN_ID).md
+SWIFTLINT ?= swiftlint
+SWIFTFORMAT ?= swiftformat
 
 define WRITE_TEST_REPORT
 mkdir -p "$(REPORT_DIR)"; \
@@ -37,7 +39,7 @@ fi; \
 echo "Test report written to $(TEST_REPORT_PATH)"
 endef
 
-.PHONY: help build test test-unit test-ui test-report clean resolve-packages show-settings open
+.PHONY: help build test test-unit test-ui test-report lint format format-lint clean resolve-packages show-settings open
 
 help:
 	@echo "Available targets:"
@@ -46,6 +48,9 @@ help:
 	@echo "  make test-unit         Run IncrementTests"
 	@echo "  make test-ui           Run IncrementUITests"
 	@echo "  make test-report       Generate a report from RESULT_BUNDLE_PATH"
+	@echo "  make lint              Run SwiftLint"
+	@echo "  make format            Run SwiftFormat"
+	@echo "  make format-lint       Run SwiftFormat, then SwiftLint"
 	@echo "  make clean             Clean build artifacts"
 	@echo "  make resolve-packages  Resolve Swift package dependencies"
 	@echo "  make show-settings     Show Xcode build settings"
@@ -84,6 +89,14 @@ test-ui:
 test-report:
 	@status="$(TEST_EXIT_STATUS)"; \
 	$(WRITE_TEST_REPORT)
+
+lint:
+	$(SWIFTLINT) lint --config .swiftlint.yml
+
+format:
+	$(SWIFTFORMAT) . --config .swiftformat
+
+format-lint: format lint
 
 clean:
 	xcodebuild clean -project "$(PROJECT)" -scheme "$(SCHEME)" -configuration "$(CONFIGURATION)"
