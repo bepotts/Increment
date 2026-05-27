@@ -3,6 +3,22 @@ Increment Project
 
 Currently a work in progress.
 
+## Tooling requirements
+
+This project expects the same tool versions locally and in CI:
+
+- SwiftLint 0.63.2
+- SwiftFormat 0.61.1
+
+For local development, install the same versions and use the Makefile targets:
+
+```bash
+make lint
+make format
+make format-lint
+make test
+```
+
 ## Firebase configuration
 
 Firebase credentials are **not** checked into this repository (`GoogleService-Info.plist` is gitignored). Each developer must use **their own** Firebase project (or credentials issued by the team) so secrets stay private and environments stay isolated.
