@@ -22,6 +22,11 @@ jobs:
       - name: Install SwiftLint
         run: brew install swiftlint
 
+      - name: Print tool versions
+        run: |
+          brew --version
+          swiftlint version
+
       - name: Run SwiftLint
         run: swiftlint lint --strict --no-cache
 
@@ -36,6 +41,11 @@ jobs:
       - name: Install SwiftFormat
         run: brew install swiftformat
 
+      - name: Print tool versions
+        run: |
+          brew --version
+          swiftformat --version
+
       - name: Check formatting
         run: swiftformat --lint . --cache ignore
 
@@ -49,6 +59,12 @@ jobs:
 
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_26.5.0.app
+
+      - name: Print tool versions
+        run: |
+          xcodebuild -version
+          xcode-select --print-path
+          swift --version
 
       - name: Prepare Firebase configuration
         run: |
