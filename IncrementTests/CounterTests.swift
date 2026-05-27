@@ -9,7 +9,7 @@ import Foundation
 @testable import Increment
 import Testing
 
-// Tests for the Counter model
+/// Tests for the Counter model
 struct CounterTests {
     @Test func initializesWithDefaultValues() {
         let counter = Counter()
