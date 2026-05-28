@@ -10,6 +10,15 @@ import SwiftData
 
 extension ModelContainer {
     static var shared: ModelContainer = {
+        if isRunningUnitTests {
+            do {
+                let config = ModelConfiguration(isStoredInMemoryOnly: true)
+                return try ModelContainer(for: Counter.self, configurations: config)
+            } catch {
+                fatalError("Failed to create test ModelContainer: \(error)")
+            }
+        }
+
         let groupID = "group.com.pottsProjects.Increment"
         guard
             let url = FileManager.default
@@ -28,4 +37,8 @@ extension ModelContainer {
             fatalError("Failed to create ModelContainer: \(error)")
         }
     }()
+
+    private static var isRunningUnitTests: Bool {
+        ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+    }
 }

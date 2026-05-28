@@ -53,6 +53,7 @@ struct IncrementApp: App {
     }
 
     private func configureFirebase() {
+        guard !Self.isUnitTesting else { return }
         guard FirebaseApp.app() == nil else { return }
 
         if let optionsPath = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),
@@ -70,17 +71,21 @@ struct IncrementApp: App {
         CommandLine.arguments.contains("-ui-testing")
     }
 
+    private static var isUnitTesting: Bool {
+        ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+    }
+
     private static var shouldSkipLandingForUITests: Bool {
         isUITesting && !CommandLine.arguments.contains("-ui-testing-show-landing")
     }
 
     private static func makeModelContainer() -> ModelContainer {
-        guard isUITesting else { return .shared }
+        guard isUITesting || isUnitTesting else { return .shared }
 
         do {
             let config = ModelConfiguration(isStoredInMemoryOnly: true)
             let container = try ModelContainer(for: Counter.self, configurations: config)
-            if !CommandLine.arguments.contains("-ui-testing-empty") {
+            if isUITesting && !CommandLine.arguments.contains("-ui-testing-empty") {
                 container.mainContext.insert(Counter(count: 6, name: "UI Test Counter", incrementBy: 2))
             }
             try container.mainContext.save()
