@@ -16,6 +16,7 @@ struct IncrementApp: App {
     @AppStorage("lastSeenLanding") private var lastSeenLanding: Double = 0
     @Environment(\.scenePhase) private var scenePhase
     @State private var hasPresentedForcedLanding = false
+    @Environment(\.scenePhase) private var scenePhase
     // Time interval to show the landing page
     private let landingInterval: TimeInterval = 24 * 60 * 60 // 24 hours in seconds
     private let analyticsClient: any AnalyticsClient
