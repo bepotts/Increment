@@ -85,7 +85,7 @@ struct IncrementApp: App {
         do {
             let config = ModelConfiguration(isStoredInMemoryOnly: true)
             let container = try ModelContainer(for: Counter.self, configurations: config)
-            if isUITesting && !CommandLine.arguments.contains("-ui-testing-empty") {
+            if isUITesting, !CommandLine.arguments.contains("-ui-testing-empty") {
                 container.mainContext.insert(Counter(count: 6, name: "UI Test Counter", incrementBy: 2))
             }
             try container.mainContext.save()
