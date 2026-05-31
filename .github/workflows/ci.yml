@@ -135,4 +135,5 @@ jobs:
             -scheme Increment \
             -only-testing:IncrementUITests \
             -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
+            -parallel-testing-enabled NO \
             -enableCodeCoverage YES
