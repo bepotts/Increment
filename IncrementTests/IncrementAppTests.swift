@@ -49,4 +49,18 @@ struct IncrementAppTests {
 
         #expect(!shouldShowLanding)
     }
+
+    @Test func landingPolicyShowsLandingWhenForcedDuringUITests() {
+        let policy = LandingPresentationPolicy(landingInterval: 86400)
+        let now = Date(timeIntervalSince1970: 100_000)
+
+        let shouldShowLanding = policy.shouldShowLanding(
+            lastSeenLanding: now.timeIntervalSince1970 - 60,
+            now: now,
+            isUITesting: true,
+            isLandingForced: true
+        )
+
+        #expect(shouldShowLanding)
+    }
 }
