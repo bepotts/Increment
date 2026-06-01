@@ -25,9 +25,17 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Cache Mint packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.mint
+          key: mint-swiftlint-${{ runner.os }}-${{ runner.arch }}-${{ env.SWIFTLINT_VERSION }}
+
       - name: Install SwiftLint
         run: |
-          brew install mint
+          if ! command -v mint >/dev/null; then
+            brew install mint
+          fi
           mint install realm/SwiftLint@${SWIFTLINT_VERSION}
           echo "$HOME/.mint/bin" >> "$GITHUB_PATH"
 
@@ -49,9 +57,17 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Cache Mint packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.mint
+          key: mint-swiftformat-${{ runner.os }}-${{ runner.arch }}-${{ env.SWIFTFORMAT_VERSION }}
+
       - name: Install SwiftFormat
         run: |
-          brew install mint
+          if ! command -v mint >/dev/null; then
+            brew install mint
+          fi
           mint install nicklockwood/SwiftFormat@${SWIFTFORMAT_VERSION}
           echo "$HOME/.mint/bin" >> "$GITHUB_PATH"
 
@@ -89,8 +105,20 @@ jobs:
             cp GoogleService-Info.template.plist GoogleService-Info.plist
           fi
 
+      - name: Cache Swift packages
+        uses: actions/cache@v4
+        with:
+          path: .build/SourcePackages
+          key: spm-${{ runner.os }}-${{ runner.arch }}-${{ env.XCODE_VERSION }}-${{ hashFiles('Increment.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          restore-keys: |
+            spm-${{ runner.os }}-${{ runner.arch }}-${{ env.XCODE_VERSION }}-
+
       - name: Resolve Swift packages
-        run: xcodebuild -resolvePackageDependencies -project Increment.xcodeproj -scheme Increment
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project Increment.xcodeproj \
+            -scheme Increment \
+            -clonedSourcePackagesDirPath .build/SourcePackages
 
       - name: Run unit tests
         run: |
@@ -99,6 +127,7 @@ jobs:
             -scheme Increment \
             -only-testing:IncrementTests \
             -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
+            -clonedSourcePackagesDirPath .build/SourcePackages \
             -enableCodeCoverage YES
 
   ui-tests:
@@ -125,8 +154,20 @@ jobs:
             cp GoogleService-Info.template.plist GoogleService-Info.plist
           fi
 
+      - name: Cache Swift packages
+        uses: actions/cache@v4
+        with:
+          path: .build/SourcePackages
+          key: spm-${{ runner.os }}-${{ runner.arch }}-${{ env.XCODE_VERSION }}-${{ hashFiles('Increment.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          restore-keys: |
+            spm-${{ runner.os }}-${{ runner.arch }}-${{ env.XCODE_VERSION }}-
+
       - name: Resolve Swift packages
-        run: xcodebuild -resolvePackageDependencies -project Increment.xcodeproj -scheme Increment
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project Increment.xcodeproj \
+            -scheme Increment \
+            -clonedSourcePackagesDirPath .build/SourcePackages
 
       - name: Run UI tests
         run: |
@@ -135,5 +176,6 @@ jobs:
             -scheme Increment \
             -only-testing:IncrementUITests \
             -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
+            -clonedSourcePackagesDirPath .build/SourcePackages \
             -parallel-testing-enabled NO \
-            -enableCodeCoverage YES
+            -enableCodeCoverage NO
