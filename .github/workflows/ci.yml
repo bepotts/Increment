@@ -113,22 +113,32 @@ jobs:
           restore-keys: |
             spm-${{ runner.os }}-${{ runner.arch }}-${{ env.XCODE_VERSION }}-
 
+      - name: Cache Xcode build products
+        uses: actions/cache@v4
+        with:
+          path: .build/DerivedData
+          key: deriveddata-${{ runner.os }}-${{ runner.arch }}-${{ env.XCODE_VERSION }}-${{ hashFiles('Increment.xcodeproj/project.pbxproj', 'Increment.xcodeproj/xcshareddata/xcschemes/*.xcscheme', 'Increment.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          restore-keys: |
+            deriveddata-${{ runner.os }}-${{ runner.arch }}-${{ env.XCODE_VERSION }}-
+
       - name: Resolve Swift packages
         run: |
           xcodebuild -resolvePackageDependencies \
             -project Increment.xcodeproj \
-            -scheme Increment \
+            -scheme IncrementUnitTests \
+            -derivedDataPath .build/DerivedData \
             -clonedSourcePackagesDirPath .build/SourcePackages
 
       - name: Run unit tests
         run: |
           xcodebuild test \
             -project Increment.xcodeproj \
-            -scheme Increment \
+            -scheme IncrementUnitTests \
             -only-testing:IncrementTests \
             -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
+            -derivedDataPath .build/DerivedData \
             -clonedSourcePackagesDirPath .build/SourcePackages \
-            -enableCodeCoverage YES
+            -enableCodeCoverage NO
 
   ui-tests:
     name: UI Tests
