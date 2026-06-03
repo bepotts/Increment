@@ -5,15 +5,15 @@
 //  Created by Brandon Potts on 5/24/26.
 //
 
+@testable import Increment
 import SwiftData
 import SwiftUI
 import Testing
 import UIKit
-@testable import Increment
 
 @MainActor
-func render<Content: View>(
-    _ view: Content,
+func render(
+    _ view: some View,
     container: ModelContainer? = nil,
     sourceLocation: SourceLocation = #_sourceLocation
 ) throws {

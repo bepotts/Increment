@@ -6,18 +6,18 @@
 //
 
 import Foundation
-import Testing
 @testable import Increment
+import Testing
 
 /// Unit tests for app-level launch presentation decisions.
 @MainActor
 struct IncrementAppTests {
     @Test func landingPolicyShowsLandingAfterInterval() {
-        let policy = LandingPresentationPolicy(landingInterval: 86_400)
+        let policy = LandingPresentationPolicy(landingInterval: 86400)
         let now = Date(timeIntervalSince1970: 100_000)
 
         let shouldShowLanding = policy.shouldShowLanding(
-            lastSeenLanding: now.timeIntervalSince1970 - 86_400,
+            lastSeenLanding: now.timeIntervalSince1970 - 86400,
             now: now,
             isUITesting: false
         )
@@ -26,7 +26,7 @@ struct IncrementAppTests {
     }
 
     @Test func landingPolicyHidesLandingBeforeInterval() {
-        let policy = LandingPresentationPolicy(landingInterval: 86_400)
+        let policy = LandingPresentationPolicy(landingInterval: 86400)
         let now = Date(timeIntervalSince1970: 100_000)
 
         let shouldShowLanding = policy.shouldShowLanding(
@@ -39,7 +39,7 @@ struct IncrementAppTests {
     }
 
     @Test func landingPolicyHidesLandingDuringUITests() {
-        let policy = LandingPresentationPolicy(landingInterval: 86_400)
+        let policy = LandingPresentationPolicy(landingInterval: 86400)
 
         let shouldShowLanding = policy.shouldShowLanding(
             lastSeenLanding: 0,
@@ -48,5 +48,19 @@ struct IncrementAppTests {
         )
 
         #expect(!shouldShowLanding)
+    }
+
+    @Test func landingPolicyShowsLandingWhenForcedDuringUITests() {
+        let policy = LandingPresentationPolicy(landingInterval: 86400)
+        let now = Date(timeIntervalSince1970: 100_000)
+
+        let shouldShowLanding = policy.shouldShowLanding(
+            lastSeenLanding: now.timeIntervalSince1970 - 60,
+            now: now,
+            isUITesting: true,
+            isLandingForced: true
+        )
+
+        #expect(shouldShowLanding)
     }
 }

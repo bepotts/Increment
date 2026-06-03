@@ -14,20 +14,23 @@ import SwiftUI
 @main
 struct IncrementApp: App {
     @AppStorage("lastSeenLanding") private var lastSeenLanding: Double = 0
+    @State private var hasPresentedForcedLanding = false
     // Time interval to show the landing page
     private let landingInterval: TimeInterval = 24 * 60 * 60 // 24 hours in seconds
-    private let analyticsClient: any AnalyticsClient = FirebaseAnalyticsClient()
+    private let analyticsClient: any AnalyticsClient
     private let modelContainer: ModelContainer
 
     private var shouldShowLanding: Bool {
         LandingPresentationPolicy(landingInterval: landingInterval).shouldShowLanding(
             lastSeenLanding: lastSeenLanding,
             now: Date(),
-            isUITesting: Self.shouldSkipLandingForUITests
+            isUITesting: Self.shouldSkipLandingForUITests,
+            isLandingForced: Self.shouldShowLandingForUITests && !hasPresentedForcedLanding
         )
     }
 
     init() {
+        analyticsClient = Self.makeAnalyticsClient()
         modelContainer = Self.makeModelContainer()
         configureFirebase()
     }
@@ -37,6 +40,7 @@ struct IncrementApp: App {
             if shouldShowLanding {
                 LandingPage {
                     lastSeenLanding = Date().timeIntervalSince1970
+                    hasPresentedForcedLanding = true
                 }
             } else {
                 CounterListView()
@@ -47,6 +51,8 @@ struct IncrementApp: App {
     }
 
     private func configureFirebase() {
+        guard !Self.isUITesting else { return }
+        guard !Self.isUnitTesting else { return }
         guard FirebaseApp.app() == nil else { return }
 
         if let optionsPath = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),
@@ -64,17 +70,31 @@ struct IncrementApp: App {
         CommandLine.arguments.contains("-ui-testing")
     }
 
+    private static var isUnitTesting: Bool {
+        ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+    }
+
     private static var shouldSkipLandingForUITests: Bool {
         isUITesting && !CommandLine.arguments.contains("-ui-testing-show-landing")
     }
 
+    private static var shouldShowLandingForUITests: Bool {
+        isUITesting && CommandLine.arguments.contains("-ui-testing-show-landing")
+    }
+
+    private static func makeAnalyticsClient() -> any AnalyticsClient {
+        guard !isUITesting, !isUnitTesting else { return NoOpAnalyticsClient() }
+
+        return FirebaseAnalyticsClient()
+    }
+
     private static func makeModelContainer() -> ModelContainer {
-        guard isUITesting else { return .shared }
+        guard isUITesting || isUnitTesting else { return .shared }
 
         do {
             let config = ModelConfiguration(isStoredInMemoryOnly: true)
             let container = try ModelContainer(for: Counter.self, configurations: config)
-            if !CommandLine.arguments.contains("-ui-testing-empty") {
+            if isUITesting, !CommandLine.arguments.contains("-ui-testing-empty") {
                 container.mainContext.insert(Counter(count: 6, name: "UI Test Counter", incrementBy: 2))
             }
             try container.mainContext.save()
@@ -89,7 +109,13 @@ struct IncrementApp: App {
 struct LandingPresentationPolicy {
     let landingInterval: TimeInterval
 
-    func shouldShowLanding(lastSeenLanding: Double, now: Date, isUITesting: Bool) -> Bool {
+    func shouldShowLanding(
+        lastSeenLanding: Double,
+        now: Date,
+        isUITesting: Bool,
+        isLandingForced: Bool = false
+    ) -> Bool {
+        guard !isLandingForced else { return true }
         guard !isUITesting else { return false }
 
         let elapsed = now.timeIntervalSince1970 - lastSeenLanding

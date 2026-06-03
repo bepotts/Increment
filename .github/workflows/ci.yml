@@ -1,0 +1,191 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  SWIFTLINT_VERSION: 0.63.2
+  SWIFTFORMAT_VERSION: 0.61.1
+  XCODE_APP_VERSION: 26.5.0
+  XCODE_VERSION: "26.5"
+
+jobs:
+  lint:
+    name: SwiftLint
+    runs-on: macos-26
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Cache Mint packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.mint
+          key: mint-swiftlint-${{ runner.os }}-${{ runner.arch }}-${{ env.SWIFTLINT_VERSION }}
+
+      - name: Install SwiftLint
+        run: |
+          if ! command -v mint >/dev/null; then
+            brew install mint
+          fi
+          mint install realm/SwiftLint@${SWIFTLINT_VERSION}
+          echo "$HOME/.mint/bin" >> "$GITHUB_PATH"
+
+      - name: Print tool versions
+        run: |
+          brew --version
+          mint version
+          swiftlint version
+          test "$(swiftlint version)" = "${SWIFTLINT_VERSION}"
+
+      - name: Run SwiftLint
+        run: swiftlint lint --strict --no-cache
+
+  format:
+    name: SwiftFormat
+    runs-on: macos-26
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Cache Mint packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.mint
+          key: mint-swiftformat-${{ runner.os }}-${{ runner.arch }}-${{ env.SWIFTFORMAT_VERSION }}
+
+      - name: Install SwiftFormat
+        run: |
+          if ! command -v mint >/dev/null; then
+            brew install mint
+          fi
+          mint install nicklockwood/SwiftFormat@${SWIFTFORMAT_VERSION}
+          echo "$HOME/.mint/bin" >> "$GITHUB_PATH"
+
+      - name: Print tool versions
+        run: |
+          brew --version
+          mint version
+          swiftformat --version
+          test "$(swiftformat --version)" = "${SWIFTFORMAT_VERSION}"
+
+      - name: Check formatting
+        run: swiftformat --lint . --cache ignore
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: macos-26
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${XCODE_APP_VERSION}.app
+
+      - name: Print tool versions
+        run: |
+          xcodebuild -version
+          xcode-select --print-path
+          swift --version
+          xcodebuild -version | grep -qx "Xcode ${XCODE_VERSION}"
+
+      - name: Prepare Firebase configuration
+        run: |
+          if [ ! -f GoogleService-Info.plist ]; then
+            cp GoogleService-Info.template.plist GoogleService-Info.plist
+          fi
+
+      - name: Cache Swift packages
+        uses: actions/cache@v4
+        with:
+          path: .build/SourcePackages
+          key: spm-${{ runner.os }}-${{ runner.arch }}-${{ env.XCODE_VERSION }}-${{ hashFiles('Increment.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          restore-keys: |
+            spm-${{ runner.os }}-${{ runner.arch }}-${{ env.XCODE_VERSION }}-
+
+      - name: Cache Xcode build products
+        uses: actions/cache@v4
+        with:
+          path: .build/DerivedData
+          key: deriveddata-${{ runner.os }}-${{ runner.arch }}-${{ env.XCODE_VERSION }}-${{ hashFiles('Increment.xcodeproj/project.pbxproj', 'Increment.xcodeproj/xcshareddata/xcschemes/*.xcscheme', 'Increment.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          restore-keys: |
+            deriveddata-${{ runner.os }}-${{ runner.arch }}-${{ env.XCODE_VERSION }}-
+
+      - name: Resolve Swift packages
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project Increment.xcodeproj \
+            -scheme IncrementUnitTests \
+            -derivedDataPath .build/DerivedData \
+            -clonedSourcePackagesDirPath .build/SourcePackages
+
+      - name: Run unit tests
+        run: |
+          xcodebuild test \
+            -project Increment.xcodeproj \
+            -scheme IncrementUnitTests \
+            -only-testing:IncrementTests \
+            -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
+            -derivedDataPath .build/DerivedData \
+            -clonedSourcePackagesDirPath .build/SourcePackages \
+            -enableCodeCoverage NO
+
+  ui-tests:
+    name: UI Tests
+    runs-on: macos-26
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${XCODE_APP_VERSION}.app
+
+      - name: Print tool versions
+        run: |
+          xcodebuild -version
+          xcode-select --print-path
+          swift --version
+          xcodebuild -version | grep -qx "Xcode ${XCODE_VERSION}"
+
+      - name: Prepare Firebase configuration
+        run: |
+          if [ ! -f GoogleService-Info.plist ]; then
+            cp GoogleService-Info.template.plist GoogleService-Info.plist
+          fi
+
+      - name: Cache Swift packages
+        uses: actions/cache@v4
+        with:
+          path: .build/SourcePackages
+          key: spm-${{ runner.os }}-${{ runner.arch }}-${{ env.XCODE_VERSION }}-${{ hashFiles('Increment.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          restore-keys: |
+            spm-${{ runner.os }}-${{ runner.arch }}-${{ env.XCODE_VERSION }}-
+
+      - name: Resolve Swift packages
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project Increment.xcodeproj \
+            -scheme Increment \
+            -clonedSourcePackagesDirPath .build/SourcePackages
+
+      - name: Run UI tests
+        run: |
+          xcodebuild test \
+            -project Increment.xcodeproj \
+            -scheme Increment \
+            -only-testing:IncrementUITests \
+            -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
+            -clonedSourcePackagesDirPath .build/SourcePackages \
+            -parallel-testing-enabled NO \
+            -enableCodeCoverage NO

@@ -10,7 +10,9 @@ import SwiftData
 
 enum CounterSchemaV1: VersionedSchema {
     static var versionIdentifier = Schema.Version(1, 0, 0)
-    static var models: [any PersistentModel.Type] { [CounterSchemaV1.Counter.self] }
+    static var models: [any PersistentModel.Type] {
+        [CounterSchemaV1.Counter.self]
+    }
 
     @Model final class Counter {
         @Attribute(.unique) var id: UUID
@@ -27,10 +29,12 @@ enum CounterSchemaV1: VersionedSchema {
     }
 }
 
-// V2 drops @Attribute(.unique) on id — required for CloudKit compatibility.
+/// V2 drops @Attribute(.unique) on id — required for CloudKit compatibility.
 enum CounterSchemaV2: VersionedSchema {
     static var versionIdentifier = Schema.Version(2, 0, 0)
-    static var models: [any PersistentModel.Type] { [CounterSchemaV2.Counter.self] }
+    static var models: [any PersistentModel.Type] {
+        [CounterSchemaV2.Counter.self]
+    }
 
     @Model final class Counter {
         var id: UUID
@@ -48,8 +52,13 @@ enum CounterSchemaV2: VersionedSchema {
 }
 
 enum CounterMigrationPlan: SchemaMigrationPlan {
-    static var schemas: [any VersionedSchema.Type] { [CounterSchemaV1.self, CounterSchemaV2.self] }
-    static var stages: [MigrationStage] { [v1ToV2] }
+    static var schemas: [any VersionedSchema.Type] {
+        [CounterSchemaV1.self, CounterSchemaV2.self]
+    }
+
+    static var stages: [MigrationStage] {
+        [v1ToV2]
+    }
 
     static let v1ToV2 = MigrationStage.lightweight(
         fromVersion: CounterSchemaV1.self,

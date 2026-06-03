@@ -12,6 +12,11 @@ protocol AnalyticsClient: Sendable {
     func logEvent(_ event: AppAnalyticsEvent, parameters: [String: Any]?)
 }
 
+/// Ignores analytics events for test and preview-only app launches.
+struct NoOpAnalyticsClient: AnalyticsClient {
+    func logEvent(_ event: AppAnalyticsEvent, parameters: [String: Any]?) {}
+}
+
 private struct AnalyticsClientKey: EnvironmentKey {
     static let defaultValue: any AnalyticsClient = FirebaseAnalyticsClient()
 }

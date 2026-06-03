@@ -6,9 +6,9 @@
 //
 
 import Foundation
+@testable import Increment
 import SwiftData
 import Testing
-@testable import Increment
 
 /// Tests for the CounterStore class.
 @MainActor
@@ -42,7 +42,7 @@ struct CounterStoreTests {
         let store = CounterStore(context: context)
         let counters = [
             Counter(name: "First"),
-            Counter(name: "Second"),
+            Counter(name: "Second")
         ]
         for counter in counters {
             try store.insert(counter)

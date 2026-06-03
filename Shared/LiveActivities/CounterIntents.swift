@@ -12,8 +12,8 @@ import OSLog
 import SwiftData
 
 /// Attributes describing an Increment Live Activity for a single `Counter`.
-nonisolated struct IncrementWidgetAttributes: ActivityAttributes, Sendable {
-    nonisolated struct ContentState: Codable, Hashable, Sendable {
+nonisolated struct IncrementWidgetAttributes: ActivityAttributes {
+    nonisolated struct ContentState: Codable, Hashable {
         /// The current count to display in the Live Activity UI.
         var count: Int
     }
