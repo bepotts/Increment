@@ -13,6 +13,7 @@ import SwiftUI
 /// container, and routes between the landing page and the counter list.
 @main
 struct IncrementApp: App {
+    @Environment(\.scenePhase) private var scenePhase
     @AppStorage("lastSeenLanding") private var lastSeenLanding: Double = 0
     @State private var hasPresentedForcedLanding = false
     // Time interval to show the landing page
@@ -37,13 +38,20 @@ struct IncrementApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if shouldShowLanding {
-                LandingPage {
-                    lastSeenLanding = Date().timeIntervalSince1970
-                    hasPresentedForcedLanding = true
+            Group {
+                if shouldShowLanding {
+                    LandingPage {
+                        lastSeenLanding = Date().timeIntervalSince1970
+                        hasPresentedForcedLanding = true
+                    }
+                } else {
+                    CounterListView()
                 }
-            } else {
-                CounterListView()
+            }
+            .onChange(of: scenePhase, initial: true) { _, newPhase in
+                guard newPhase == .active else { return }
+
+                analyticsClient.logEvent(.appOpened, parameters: nil)
             }
         }
         .environment(\.analyticsClient, analyticsClient)

@@ -15,6 +15,7 @@ enum AppStrings {
 
 /// Analytics event names emitted by the app and shared extension code.
 enum AppAnalyticsEvent: String {
+    case appOpened = "app_opened"
     case counterCreated = "counter_created"
     case liveActivityStarted = "live_activity_started"
     case incrementFromLiveActivity = "increment_from_live_activity"
